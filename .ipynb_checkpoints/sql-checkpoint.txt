@@ -1,0 +1,60 @@
+--Create and fill database
+
+create table dept(   
+  deptno     int,   
+  dname      varchar(15),   
+  loc        varchar(15),   
+  constraint pk_dept primary key (deptno)   
+);
+
+create table emp(   
+  empno    int,   
+  ename    varchar(10),   
+  job      varchar(10),    
+  hiredate date,   
+  sal      int,   
+  deptno   int,   
+  constraint pk_emp primary key (empno),   
+  constraint fk_deptno foreign key (deptno) references dept (deptno)   
+);
+
+insert into DEPT (DEPTNO, DNAME, LOC) 
+values 
+(2, 'RESEARCH', 'CHICAGO'),
+(1, 'ACCOUNTING', 'NEW YORK'),
+(3, 'SALES', 'CHICAGO'),
+(4, 'OPERATIONS', 'BOSTON');
+
+insert into emp   
+values
+(1,'KING', 'PRESIDENT', to_date('7-11-1971','dd-mm-yyyy'), 5000, 1),
+(2,'MILLER', 'MANAGER', to_date('1-11-1980','dd-mm-yyyy'), 6000, 2),
+(3,'JAMES', 'ANALYST', to_date('03-07-1987','dd-mm-yyyy'), 7000, 2),
+(4,'JAMES', 'ANALYST', to_date('12-07-1971','dd-mm-yyyy'), 5500, 2),
+(5,'TURNER', 'SALESMAN', to_date('15-09-1982','dd-mm-yyyy'), 5000, 3),
+(6,'MARTIN', 'ANALYST', to_date('16-06-1989','dd-mm-yyyy'), 4000, 2),
+(7,'WARD', 'ANALYST', to_date('20-05-1985','dd-mm-yyyy'), 7000, 1),
+(8,'ALLEN', 'MANAGER', to_date('07-08-1991','dd-mm-yyyy'), 5500, 2),
+(9,'SMITH', 'SALESMAN', to_date('01-01-1974','dd-mm-yyyy'), 9000, 3),
+(10,'FORD', 'SALESMAN', to_date('08-01-1975','dd-mm-yyyy'), 3500, 3),
+(11,'SCOTT', 'SALESMAN', to_date('18-11-1991','dd-mm-yyyy'), 4600, 3),
+(12,'JONES', 'SALESMAN', to_date('18-08-1992','dd-mm-yyyy'), 5000, 3),
+(13,'CLARK', 'CLERK', to_date('20-03-1999','dd-mm-yyyy'), 8500, 4),
+(14,'BLAKE', 'ANALYST', to_date('21-04-1988','dd-mm-yyyy'), 6500, 1),
+(15,'RAYEN', 'CLERK', to_date('22-11-1986','dd-mm-yyyy'), 2500, 4),
+(16,'Ned', 'SALESMAN', to_date('23-04-1983','dd-mm-yyyy'), 7500, 3),
+(17,'Isabelle', 'SALESMAN', to_date('10-11-1987','dd-mm-yyyy'), 5800, 3),
+(18,'Pearlie', 'CLERK', to_date('24-09-1986','dd-mm-yyyy'), 5600, 4),
+(19,'Henrietta', 'CLERK', to_date('25-08-1967','dd-mm-yyyy'), 5000, 4),
+(20,'Elvin', 'ANALYST', to_date('11-07-1991','dd-mm-yyyy'), 4000, 1),
+(21,'Margo', 'MANAGER', to_date('08-12-1999','dd-mm-yyyy'), 4620, 4),
+(22,'Sharlene', 'CLERK', to_date('07-01-1989','dd-mm-yyyy'), 4300, 4);
+
+
+-- Selection based on some condition
+select count(*) from emp;
+select * from emp where job = 'CLERK';
+select job , avg(sal) from emp group by rollup (job,deptno);
+select * from emp where ename like '%S%';
+select e.deptno , avg(sal) as "Average Salary" , min(sal) as "Minimum salary" , max(sal) as  "Maximum salary"  from emp e join dept d on d.deptno=e.deptno  group by e.deptno;
+select deptno , ename , rank() over (partition by deptno order by sal desc)  from emp;
